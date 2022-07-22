@@ -26,8 +26,16 @@ void Pause(char str[]) {
 }
 
 void Secure_System() {
+
    system("cls");
    Indicator(FYELLOW, BYELLOW, "!", "For security reasons, the system is temporarily locked.");
    Pause("The bank staff is coming to assist you. Thank you.");
    exit(EXIT_FAILURE);
+}
+
+void Display_Goodbye() {
+   system("cls");
+   Indicator(FBLUE, BBLUE, "", "Thank you for using our program.");
+   Pause("Press any key to close.");
+   exit(EXIT_SUCCESS);
 }

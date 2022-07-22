@@ -97,3 +97,33 @@ void Get_User_Account_Number(char string[], char SELECTED_ACC_NUMBER[]) {
    }
 }
 
+double Get_Double_Input(char *TO_PARSE) {
+   double PARSED_DOUBLE;
+   char *Garbage;
+   PARSED_DOUBLE = strtod(TO_PARSE, &Garbage);
+
+   // If user invalid input the strtod will return 0.00
+
+   // Catch strtod error
+   // Reset the Credit back to default.
+   // And go back to InsertAmountRegion
+   if (PARSED_DOUBLE == 0.0) 
+   {
+      memset(TO_PARSE, 0, sizeof(TO_PARSE));
+      Indicator(FRED, BRED, TO_PARSE, "The amount must contain numbers only.");
+      Pause("Press any key to continue.");
+      return 0.0;
+   }
+   for (int i = 0; i < sizeof(Garbage)/ sizeof(Garbage[0]); i++)
+   {
+      if (Garbage[0] != '\0')
+      {
+         memset(TO_PARSE, 0, sizeof(TO_PARSE));
+         Indicator(FRED, BRED, TO_PARSE, "The amount must contain numbers only.");
+         Pause("Press any key to continue.");
+         return 0.0;
+      }
+   }
+
+   return PARSED_DOUBLE;
+}

@@ -25,7 +25,7 @@ int main() {
    char Acc_Number[MAX_ACCOUNT_NUMBER_LENGTH + 1] = "\0";
    char PIN[MAX_PIN_LENGTH + 1] = "\0";
    int TRIES = 0;
-
+   StartRegion:;
    system("cls");
    Display_Welcome();
 
@@ -108,15 +108,37 @@ int main() {
    Display_Menu_Option();
    // Get user option, without echoing to simulate key press experience
    option = getch();
-   
-   if (option == 'A' || option == 'a')
+
+   switch (option)
    {
+   case 'A':
+   case 'a':
       // Add New Account
       Add_New_Account();
       system("cls");
+      break;
+   case 'E':
+   case 'e':
+      Edit_Account();
+      system("cls");
+      break;
+   case 'Q':
+   case 'q':
+      if (Is_User_Want_Sign_Out()) {
+         memset(Acc_Number, 0, sizeof(Acc_Number));
+         system("cls");
+         goto StartRegion;
+      }
+      else {
+         system("cls");
+         goto MenuStartRegion;
+      }
+   case 'X':
+   case 'x':
+      Display_Goodbye();
+      break;
    }
-
-   goto MenuStartRegion;
-   
+    
+   goto MenuStartRegion;  
 }
 

@@ -16,6 +16,7 @@
 // ===============================
 
 #define BANK_DATABASE_FILE "./database/bank.txt"
+#define BANK_DATABASE_TEMP_FILE "./database/bank.temp.txt"
 #define ACCOUNT_DATABASE_FILE "./database/account.dat"
 #define BANK_DATABASE_STRING_FORMAT "%d : %s : %d : %lf : %lf : %lf\n"
 #define ACCOUNT_DATABASE_STRING_FORMAT "%d\n"
@@ -71,4 +72,8 @@ void Pause();
 void Display_Menu_Option();
 void Add_New_Account();
 void Display_User_Data_Input_Fields(int, char *, char *, double, double, double);
+int Is_User_Want_Sign_Out();
+void Edit_Account();
+void Deposit(char *);
+double Get_Double_Input(char *);
 
