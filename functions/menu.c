@@ -260,11 +260,6 @@ void Edit_Account() {
    char Account_Number[MAX_ACCOUNT_NUMBER_LENGTH + 1] = "\0";
    char PIN[MAX_PIN_LENGTH + 1] = "\0";
 
-   char String_Deposit[256];
-   float Parsed_Deposit;
-   char String_Withdraw[256];
-   float Parsed_Withdraw;
-
    char choice;
 
    // Get account number
@@ -314,7 +309,10 @@ void Edit_Account() {
    if (choice == 'Y' || choice == 'y')
    {
       Deposit(Account_Number);
-   } else if (choice != 'N' || choice != 'n') {
+   } else if (choice == 'N' || choice == 'n') {
+      system("cls");
+      goto WithdrawRegion;
+   } else {
       system("cls");
       Indicator(FRED, BRED, "Invalid Input", "Press [Y]es or [N]o only.");
       Pause("Press any key to try again.");
@@ -322,21 +320,87 @@ void Edit_Account() {
    }
 
    WithdrawRegion:;
+   system("cls");
    Display_User_Data(atoi(Account_Number));
    Pause("Press any key to continue.");
    system("cls");
    Indicator(FGREEN, BGREEN, "Y/N", "Do you want to withdraw?");
    choice = getch();  
-
+   
    if (choice == 'Y' || choice == 'y')
    {
-      // Deposit(Account_Number); TODO  
-   } else if (choice != 'N' || choice != 'n') {
+      Withdraw(atoi(Account_Number));  
+   } else if (choice == 'N' || choice == 'n') {
+      // No function
+   } else {
       system("cls");
       Indicator(FRED, BRED, "Invalid Input", "Press [Y]es or [N]o only.");
       Pause("Press any key to try again.");
       goto WithdrawRegion;
    }
+}
+
+void Withdraw(int ACCOUNT_NUMBER) {
+
+   Start:;
+   char AMOUNT[256] = "\0";
+   double PARSED_AMOUNT = 0;
+   system("cls");
+   Indicator(FGREEN, BGREEN, "Withdraw", "You are about to withdraw your money."); 
+   
+   printf("Enter amount of money do you want to withdraw: ");
+   scanf("%s", AMOUNT);
+   fflush(stdin);
+   PARSED_AMOUNT = Get_Double_Input(AMOUNT);
+
+   if (PARSED_AMOUNT == 0)
+   {
+      Indicator(FRED, BRED, "Invalid Input", "Please enter a valid amount.");
+      Pause("Press any key to continue");
+      goto Start;
+   }
+
+   // Open File
+   FILE *file = fopen(BANK_DATABASE_FILE, "r");
+   FILE *filetemp = fopen(BANK_DATABASE_TEMP_FILE, "w");
+   
+   struct UserData UserData;
+
+  
+   while (fscanf(file, BANK_DATABASE_STRING_FORMAT, &UserData.Acc_Number, UserData.Name, &UserData.PIN, &UserData.Credit, &UserData.Debit, &UserData.Balance) != EOF)
+   {
+      if (ACCOUNT_NUMBER == UserData.Acc_Number)
+      {
+
+         if (UserData.Balance < PARSED_AMOUNT)
+         {
+            system("cls");
+            Indicator(FRED, BRED, "!", "Insufficient Amount."); 
+            fclose(file);
+            fclose(filetemp);
+            remove(BANK_DATABASE_TEMP_FILE);
+            Pause("Press any key to continue.");
+            goto Start;
+         } else {
+            printf("%sPrevious Balance: %.2lf%s\n", UserData.Balance, FRED, FWHITE);
+            UserData.Balance -= PARSED_AMOUNT;
+            printf("%sNew Balance: %.2lf%s\n", UserData.Balance, FRED, FWHITE);
+            UserData.Debit += PARSED_AMOUNT;
+         }
+      }
+      
+      fprintf(filetemp, BANK_DATABASE_STRING_FORMAT, UserData.Acc_Number, UserData.Name, UserData.PIN, UserData.Credit, UserData.Debit, UserData.Balance);
+   }
+   
+   fclose(file);
+   fclose(filetemp);
+
+   remove(BANK_DATABASE_FILE);
+   rename(BANK_DATABASE_TEMP_FILE, BANK_DATABASE_FILE);
+
+   Display_User_Data(ACCOUNT_NUMBER);
+   Pause("Press any key to continue.");
+   
 }
 
 void Display_User_Data(int ACCOUNT_NUMBER) {
@@ -417,4 +481,134 @@ void Deposit(char *ACCOUNT_NUMBER) {
 
    remove(BANK_DATABASE_FILE);
    rename(BANK_DATABASE_TEMP_FILE, BANK_DATABASE_FILE);
+   Pause("Press any key to continue.");
+}
+
+void Delete_Account() {
+   char Account_Number[MAX_ACCOUNT_NUMBER_LENGTH + 1] = "\0";
+   char PIN[MAX_PIN_LENGTH + 1] = "\0";
+
+   AccountNumberRegion:;
+   system ("cls");
+   Get_User_Account_Number("Enter the account number you want to delete: ", Account_Number);
+
+   if (!Is_Acc_Number_Registered(Account_Number))
+   {
+      Indicator(FRED, BRED, Account_Number, "\nRecord not found!");
+      Pause("Press any key to continue.");
+      goto AccountNumberRegion;
+   }
+
+   int attempts = 3;
+   PINRegion:;
+
+   if (attempts == 0)
+   {
+      printf("\nYou only have %d attempt(s) left.", attempts);
+      Secure_System();
+   }
+   
+   system("cls");
+   Get_PIN("Enter PIN code: ", PIN);
+
+   if (!Verify_PIN(PIN, Account_Number))
+   {
+      attempts--;
+      Indicator(FRED, BRED, Account_Number, "\nIncorrect PIN!");
+      Pause("Press any key to continue.");
+      goto PINRegion;
+   }
+
+   Indicator(FBLUE, BBLUE, Account_Number, "\nYour account information.");
+   Display_User_Data(atoi(Account_Number));
+   Pause("Press any key to continue.");
+
+   PromptRegion:;
+   system("cls");
+   Indicator(FBLUE, BBLUE, Account_Number, "Are you sure to delete this account?");
+   Indicator(FRED, BRED, "Y", "Yes, I want to delete.");
+   Indicator(FGREEN, BGREEN, "N", "No, I have changed my mind.");
+
+   char option = getch();
+
+   if (option == 'Y' || option == 'y')
+   {
+      Delete_User_Account(atoi(Account_Number));
+   } 
+   else if (option != 'N' || option != 'n')
+   {
+      Indicator(FRED, BRED, "Invalid Input", "Please enter (Y) Yes or (N) No only.");      
+      goto PromptRegion;
+   }
+
+}
+
+void Delete_User_Account(int ACCOUNT_NUMBER) {
+   
+   // Delete in BANK.TXT
+   FILE *file = fopen(BANK_DATABASE_FILE, "r");
+   FILE *filetemp = fopen(BANK_DATABASE_TEMP_FILE, "w");
+   
+   struct UserData UserData;
+
+   while (fscanf(file, BANK_DATABASE_STRING_FORMAT, &UserData.Acc_Number, UserData.Name, &UserData.PIN, &UserData.Credit, &UserData.Debit, &UserData.Balance) != EOF)
+   {
+      if (ACCOUNT_NUMBER != UserData.Acc_Number)
+      {
+         fprintf(filetemp, BANK_DATABASE_STRING_FORMAT, UserData.Acc_Number, UserData.Name, UserData.PIN, UserData.Credit, UserData.Debit, UserData.Balance);
+      }
+      
+   }
+
+   fclose(file);
+   fclose(filetemp);
+
+   remove(BANK_DATABASE_FILE);
+   rename(BANK_DATABASE_TEMP_FILE, BANK_DATABASE_FILE);
+
+   // Delete ACCOUNT.DAT
+
+   FILE *filedat = fopen(ACCOUNT_DATABASE_FILE, "rb");
+   FILE *filedattemp = fopen(ACCOUNT_DATABASE_TEMP_FILE, "wb");
+
+   int Account_Number_Buffer;
+
+   while (fread(&Account_Number_Buffer, sizeof(Account_Number_Buffer), 1, file) == 1)
+   {
+      if (Account_Number_Buffer != ACCOUNT_NUMBER)
+      {
+         fwrite(&Account_Number_Buffer, sizeof(Account_Number_Buffer), 1, filedattemp);
+      }
+   }
+   
+   fclose(filedat);
+   fclose(filedattemp);
+
+   remove(ACCOUNT_DATABASE_FILE);
+   rename(ACCOUNT_DATABASE_TEMP_FILE, ACCOUNT_DATABASE_FILE);
+   
+   Indicator(FGREEN, BGREEN, "Success", "Account deleted successfully.");
+   Pause("Press any key to continue.");
+
+}
+
+void View_Accounts() {
+
+   system("cls");
+   FILE *file = fopen(BANK_DATABASE_FILE, "r");
+
+   struct UserData UserData;
+
+   Indicator(FBLUE, BBLUE, "View User Information", "Showing all information...");
+   printf("=================================================================================================================\n");
+   printf("%sAccount Number\t|\tAccount Name\t|\tPIN\t|\tCredit\t\t|\tDebit\t|\tBalance%s\n", FGREEN,FWHITE);
+
+   while (fscanf(file, BANK_DATABASE_STRING_FORMAT, &UserData.Acc_Number, UserData.Name, &UserData.PIN, &UserData.Credit, &UserData.Debit, &UserData.Balance) != EOF)
+   {
+      printf("%d\t\t|\t%s\t\t|\t%d\t|\t%.2lf\t|\t%.2lf\t|\t%.2lf\n", UserData.Acc_Number, UserData.Name, UserData.PIN, UserData.Credit, UserData.Debit, UserData.Balance);   
+   }
+
+   fclose(file);
+   printf("=================================================================================================================\n");
+   Pause("Press any key to continue.");
 }

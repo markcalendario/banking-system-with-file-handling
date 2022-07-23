@@ -18,6 +18,7 @@
 #define BANK_DATABASE_FILE "./database/bank.txt"
 #define BANK_DATABASE_TEMP_FILE "./database/bank.temp.txt"
 #define ACCOUNT_DATABASE_FILE "./database/account.dat"
+#define ACCOUNT_DATABASE_TEMP_FILE "./database/account.temp.dat"
 #define BANK_DATABASE_STRING_FORMAT "%d : %s : %d : %lf : %lf : %lf\n"
 #define ACCOUNT_DATABASE_STRING_FORMAT "%d\n"
 
@@ -77,4 +78,8 @@ void Edit_Account();
 void Deposit(char *);
 double Get_Double_Input(char *);
 void Display_User_Data(int);
+void Delete_Account();
+void Delete_User_Account(int);
+void View_Accounts();
+void Withdraw(int);
 

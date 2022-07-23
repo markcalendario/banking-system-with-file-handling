@@ -93,7 +93,7 @@ int main() {
    }
 
    // If user entered a correct PIN...
-   printf("\n");
+   system("cls");
    Indicator(FGREEN, BGREEN, Acc_Number, "Success! You are now logged in.");
    Pause("Press any key to operate the system.");
    system("cls");
@@ -120,6 +120,15 @@ int main() {
    case 'E':
    case 'e':
       Edit_Account();
+      system("cls");
+      break;
+   case 'D':
+   case 'd':
+      Delete_Account();
+      system("cls");
+   case 'V':
+   case 'v':
+      View_Accounts();
       system("cls");
       break;
    case 'Q':
