@@ -71,9 +71,10 @@ void Indicator(char *, char *, char *, char *);
 void Pause();
 void Display_Menu_Option();
 void Add_New_Account();
-void Display_User_Data_Input_Fields(int, char *, char *, double, double, double);
+void Display_User_Data_Input_Fields(char *, char *, char *, char *, int , char *, char *, double, double, double);
 int Is_User_Want_Sign_Out();
 void Edit_Account();
 void Deposit(char *);
 double Get_Double_Input(char *);
+void Display_User_Data(int);
 

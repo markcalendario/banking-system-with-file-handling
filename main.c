@@ -138,7 +138,8 @@ int main() {
       Display_Goodbye();
       break;
    }
-    
+   
+   system("cls");
    goto MenuStartRegion;  
 }
 
