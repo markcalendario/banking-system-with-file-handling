@@ -303,7 +303,7 @@ void Edit_Account() {
    system("cls");
    Display_User_Data(atoi(Account_Number));
    printf("\n");
-   Indicator(FBLUE, BBLUE, "Y/N", "Do you want to deposit?");
+   Indicator(FCYAN, BCYAN, "Y/N", "Do you want to deposit?");
    choice = getch();
    
    if (choice == 'Y' || choice == 'y')
@@ -322,9 +322,8 @@ void Edit_Account() {
    WithdrawRegion:;
    system("cls");
    Display_User_Data(atoi(Account_Number));
-   Pause("Press any key to continue.");
-   system("cls");
-   Indicator(FGREEN, BGREEN, "Y/N", "Do you want to withdraw?");
+   printf("\n");
+   Indicator(FCYAN, BCYAN, "Y/N", "Do you want to withdraw?");
    choice = getch();  
    
    if (choice == 'Y' || choice == 'y')
@@ -467,7 +466,7 @@ void Deposit(char *ACCOUNT_NUMBER) {
    {
       if (atoi(ACCOUNT_NUMBER) == temp.Acc_Number)
       {
-         Indicator(FGREEN, BBLUE, "Success", "Your account has been updated successfully.");
+         Indicator(FGREEN, BGREEN, "Success", "Your account has been updated successfully.");
          printf("%sYour previous balance: %.2lf%s\n", FRED, temp.Balance, FWHITE);
          temp.Balance += Deposit_Amount;
          temp.Credit += Deposit_Amount;
@@ -490,17 +489,21 @@ void Delete_Account() {
 
    AccountNumberRegion:;
    system ("cls");
+   Indicator(FRED, BRED, "Account Deletion", "You are about to delete an acount.");
    Get_User_Account_Number("Enter the account number you want to delete: ", Account_Number);
 
    if (!Is_Acc_Number_Registered(Account_Number))
    {
-      Indicator(FRED, BRED, Account_Number, "\nRecord not found!");
+      printf("\n");
+      memset(Account_Number, 0, sizeof(Account_Number));
+      Indicator(FRED, BRED, Account_Number, "Record not found!");
       Pause("Press any key to continue.");
       goto AccountNumberRegion;
    }
 
    int attempts = 3;
    PINRegion:;
+   system("cls");
 
    if (attempts == 0)
    {
@@ -514,12 +517,13 @@ void Delete_Account() {
    if (!Verify_PIN(PIN, Account_Number))
    {
       attempts--;
-      Indicator(FRED, BRED, Account_Number, "\nIncorrect PIN!");
+      printf("\n");
+      Indicator(FRED, BRED, Account_Number, "Incorrect PIN!");
       Pause("Press any key to continue.");
       goto PINRegion;
    }
 
-   Indicator(FBLUE, BBLUE, Account_Number, "\nYour account information.");
+   Indicator(FBLUE, BBLUE, Account_Number, "Your account information.");
    Display_User_Data(atoi(Account_Number));
    Pause("Press any key to continue.");
 

@@ -33,7 +33,7 @@ int main() {
    // Account Number
    // ===============================
    AccountNumberInputRegion:;
-
+   Indicator(FBLUE, BBLUE, "Login Portal", "Please login your account.");
    // Get the user account number.
    // Go to this function to see the definition.
    Get_User_Account_Number("Enter your 5-digit account number: ", Acc_Number);
