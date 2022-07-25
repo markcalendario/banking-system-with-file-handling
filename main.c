@@ -22,25 +22,30 @@
 #include "./functions/menu.c"
 
 #pragma region DATABASE INITIALIZER
-// Initialization Of Database
-// FILE *file = fopen(BANK_DATABASE_FILE, "w");
-// fprintf(file, BANK_DATABASE_STRING_FORMAT, 12345, "Sarah", 1997, 25000.00, 1000.00, 24000.00);
-// fprintf(file, BANK_DATABASE_STRING_FORMAT, 24689,	"Jacob",	2022,	25000.00, 500.00,	24500.00	);
-// fprintf(file, BANK_DATABASE_STRING_FORMAT, 12376, "Beka", 2011, 25000.00, 5000.00, 20000.00);
-// fclose(file);
+   // FILE *file = fopen(BANK_DATABASE_FILE, "w");
+   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10001, "Kenneth", 1902, 0.00, 0.00, 0.00);
+   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10002, "Kim", 3245, 0.00, 0.00, 0.00);
+   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10003, "Nicole", 4444, 0.00, 0.00, 0.00);
+   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10004, "Elaine", 9944, 0.00, 0.00, 0.00);
+   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10005, "JohnRace", 6677, 0.00, 0.00, 0.00);
+   // fclose(file);
 
-// FILE *file2 = fopen(ACCOUNT_DATABASE_FILE, "wb");
-// int a = 12345;
-// int b = 24689;
-// int c = 12376;
-// fwrite(&a, sizeof(a), 1, file2);
-// fwrite(&b, sizeof(b), 1, file2);
-// fwrite(&c, sizeof(c), 1, file2);
-// fclose(file2);
+   // FILE *file2 = fopen(ACCOUNT_DATABASE_FILE, "wb");
+   // int a = 10001;
+   // int b = 10002;
+   // int c = 10003;
+   // int d = 10004;
+   // int e = 10005;
+   // fwrite(&a, sizeof(a), 1, file2);
+   // fwrite(&b, sizeof(b), 1, file2);
+   // fwrite(&c, sizeof(c), 1, file2);
+   // fwrite(&d, sizeof(d), 1, file2);
+   // fwrite(&e, sizeof(e), 1, file2);
+   // fclose(file2);
 #pragma endregion
 
 int main() {
-   
+
    char Acc_Number[MAX_ACCOUNT_NUMBER_LENGTH + 1] = "\0";
    char PIN[MAX_PIN_LENGTH + 1] = "\0";
    int TRIES = 0;
@@ -53,16 +58,16 @@ int main() {
    // ==============================================
    // Login Portal
    // ==============================================
-   Indicator(FBLUE, BBLUE, "Login Portal", "Please login your account.");
+   Indicator(FBLUE, BBLUE, "Admin Login", "Please login your account.");
 
    // Get user account number.
    Get_User_Account_Number("Enter your 5-digit account number: ", Acc_Number);
    
    // Check if account registered. 
-   if (!Is_Acc_Number_Registered(Acc_Number))
+   if (!Is_Account_Admin(atoi(Acc_Number)))
    {
       system("cls");
-      Indicator(FRED, BRED, Acc_Number, "Account number does not exists!");
+      Indicator(FRED, BRED, Acc_Number, "Account number is not admin or not registered!");
       memset(Acc_Number, 0, sizeof(Acc_Number));
       Pause("Press any key to try again.");
       system("cls");
@@ -70,7 +75,7 @@ int main() {
    }
 
    system("cls");
-   Indicator(FGREEN, BGREEN, Acc_Number, "Account number is registered.");
+   Indicator(FGREEN, BGREEN, Acc_Number, "You are about to login as an admin.");
 
    PINInputRegion:;
    if (TRIES == 3) { Secure_System(); } // Stop the system if user tried to login thrice.

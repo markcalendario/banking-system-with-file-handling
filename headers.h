@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 // ===============================
 // Environment Variables
@@ -66,6 +67,7 @@ struct UserData {
 void Display_Welcome();
 void Get_User_Account_Number(char *, char *);
 int Is_Acc_Number_Registered(char *);
+int Is_Account_Admin(int);
 int Verify_PIN(char *, char *);
 void Get_PIN(char *, char *);
 void Indicator(char *, char *, char *, char *);
@@ -76,7 +78,6 @@ void Display_User_Data_Input_Fields(char *, char *, char *, char *, int , char *
 int Is_User_Want_Sign_Out();
 void Edit_Account();
 void Deposit(char *);
-double Parse_To_Double(char *);
 void Display_User_Data(int);
 void Delete_Account();
 void Delete_User_Account(int);

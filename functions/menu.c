@@ -14,8 +14,7 @@ void Add_New_Account() {
    char New_PIN[MAX_PIN_LENGTH + 1] = "\0";
    char Confirm_New_PIN[MAX_PIN_LENGTH + 1] = "\0";
    char New_Name[256] = "\0";
-   char Credit[256] ="\0";
-   double Parsed_Credit = 0.0;
+   double Credit = 0.0;
 
    // ========================================
    // Get New Account Number
@@ -25,17 +24,7 @@ void Add_New_Account() {
    system("cls");
 
    // Display all the required input field
-   Display_User_Data_Input_Fields(
-      FBLUE,
-      BBLUE,
-      "Add New Account",
-      "Please fill out all required fields.",
-      atoi(New_Acc_Number), 
-      New_Name, New_PIN, 
-      Parsed_Credit, 
-      0.0, 
-      Parsed_Credit
-   );
+   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Credit, 0.0, Credit);
 
    printf("\n");
    Get_User_Account_Number("Enter new account number: ", New_Acc_Number);
@@ -52,17 +41,7 @@ void Add_New_Account() {
    system("cls");
 
    // Display the updated required field
-   Display_User_Data_Input_Fields(
-      FBLUE,
-      BBLUE,
-      "Add New Account",
-      "Please fill out all required fields.",
-      atoi(New_Acc_Number), 
-      New_Name, New_PIN, 
-      Parsed_Credit, 
-      0.0, 
-      Parsed_Credit
-   );
+   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Credit, 0.0, Credit);
    Indicator(FGREEN, BGREEN, New_Acc_Number, "New Account Number Set. Press any key to continue.");
    getch();
 
@@ -72,17 +51,7 @@ void Add_New_Account() {
    NewNameInput:;
 
    system("cls");
-   Display_User_Data_Input_Fields(
-      FBLUE,
-      BBLUE,
-      "Add New Account",
-      "Please fill out all required fields.",
-      atoi(New_Acc_Number), 
-      New_Name, New_PIN, 
-      Parsed_Credit, 
-      0.0, 
-      Parsed_Credit
-   );
+   Display_User_Data_Input_Fields(FBLUE,BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Credit, 0.0, Credit);
 
    // Get user name
    printf("\nEnter new name: ");
@@ -95,12 +64,12 @@ void Add_New_Account() {
    // ========================================
    ConfirmPIN:;
 
-   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Parsed_Credit, 0.0, Parsed_Credit);
+   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Credit, 0.0, Credit);
    printf("\n");
    Get_PIN("Enter new PIN: ", New_PIN);
    
    system("cls");
-   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name,  "", Parsed_Credit, 0.0, Parsed_Credit);
+   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name,  "", Credit, 0.0, Credit);
    printf("\n");
    
    // ========================================
@@ -125,21 +94,22 @@ void Add_New_Account() {
    InsertCredit:;
 
    system("cls");
-   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Parsed_Credit, 0.0, Parsed_Credit);
+   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Credit, 0.0, Credit);
 
    // Get credit amount
    printf("\nEnter credit amount: ");
-   scanf("\n%s", Credit);
+   scanf("%lf", &Credit);
    fflush(stdin);
 
    // Verify credit amount
-   Parsed_Credit = Parse_To_Double(Credit);
-   if (Parsed_Credit == 0.0)
+   if (Credit < 0.00000001)
    {
+      Indicator(FRED, BRED, "Invalid Input", "The amount that you have inputted is invalid.");
+      Pause("Press any key to continue.");
       goto InsertCredit;
    }
 
-   if (Parsed_Credit < 1)
+   if (Credit < 1)
    {
       Indicator(FRED, BRED, "Invalid Input", "We only accept 1 peso or higher.");
       Pause("Press any key to continue.");
@@ -153,18 +123,11 @@ void Add_New_Account() {
    // Store new data in BANK.TXT
    FILE *Bank_File;
    Bank_File = fopen(BANK_DATABASE_FILE, "a");
-   fprintf(Bank_File, BANK_DATABASE_STRING_FORMAT, atoi(New_Acc_Number), New_Name, atoi(New_PIN), Parsed_Credit, 0.00, Parsed_Credit);
+   fprintf(Bank_File, BANK_DATABASE_STRING_FORMAT, atoi(New_Acc_Number), New_Name, atoi(New_PIN), Credit, 0.00, Credit);
    fclose(Bank_File);
 
-   // Store new account number in binary format in ACCOUNT.DAT
-   int Parsed_New_Acc_Number = atoi(New_Acc_Number);
-   FILE *Account_File;
-   Account_File = fopen(ACCOUNT_DATABASE_FILE, "ab");
-   fwrite(&Parsed_New_Acc_Number, sizeof(Parsed_New_Acc_Number), 1, Account_File);
-   fclose(Account_File);
-
    system("cls");
-   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Parsed_Credit, 0.0, Parsed_Credit);
+   Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Credit, 0.0, Credit);
    Indicator(FGREEN, BGREEN, "Success", "This account registered successfully.");
    Pause("Press any key to continue.");
 }
@@ -203,7 +166,17 @@ void Edit_Account() {
    memset(Account_Number, 0, sizeof(Account_Number));
    Indicator(FGREEN, BGREEN, "Edit Account Number", "Please fill out the following.");
    Get_User_Account_Number("Enter the account number you want to edit: ", Account_Number);
-   
+
+   // Is Admin
+
+   if (Is_Account_Admin(atoi(Account_Number)))
+   {
+      system("cls");
+      Indicator(FYELLOW, BYELLOW, "Warning", "You cannot withdraw using an admin account.");
+      Pause("Press any key to go back to main menu.");
+      goto End;
+   }
+
    // Verify account number
    if (!Is_Acc_Number_Registered(Account_Number))
    {
@@ -216,10 +189,9 @@ void Edit_Account() {
    // ========================================
    // Get User PIN
    // ========================================
+   int attempts = 3;
    GetPinRegion:;
    system("cls");
-
-   int attempts = 3;
 
    if (attempts == 0) // Simulate system shutdown
       Secure_System();
@@ -233,6 +205,7 @@ void Edit_Account() {
       system("cls");
       attempts--;
       Indicator(FRED, BRED, Account_Number, "Incorrect PIN code!");
+      printf("You have %d attempt(s) left.\n", attempts);
       Pause("Press any key to continue.");
       goto GetPinRegion;
    }
@@ -284,6 +257,8 @@ void Edit_Account() {
       Pause("Press any key to try again.");
       goto WithdrawRegion;
    }
+
+   End:;
 }
 
 void Withdraw(int ACCOUNT_NUMBER) {
@@ -292,25 +267,25 @@ void Withdraw(int ACCOUNT_NUMBER) {
 
    Start:;
    char AMOUNT[256] = "\0";
-   double PARSED_AMOUNT = 0;
+   double Withdraw_Amount = 0;
    system("cls");
    Indicator(FGREEN, BGREEN, "Withdraw", "You are about to withdraw your money."); 
    
    // Get amount of money that users want to withdraw
    printf("Enter amount of money do you want to withdraw: ");
-   scanf("%s", AMOUNT);
+   scanf("%lf", &Withdraw_Amount);
    fflush(stdin);
 
-   PARSED_AMOUNT = Parse_To_Double(AMOUNT);
-
    // Check if valid input
-   if (PARSED_AMOUNT == 0)
+   if (Withdraw_Amount < 0.00000001)
    {
+      Indicator(FRED, BRED, "Invalid Input", "The amount of money you have inputted is invalid.");
+      Pause("Press any key to continue");
       goto Start;
    }
 
    // Check if negative input
-   if (PARSED_AMOUNT < 0)
+   if (Withdraw_Amount < 0)
    {
       Indicator(FRED, BRED, "Invalid Input", "Withdrawing negative amount is not valid.");
       Pause("Press any key to continue");
@@ -331,7 +306,7 @@ void Withdraw(int ACCOUNT_NUMBER) {
       {
 
          // Check if user has enough money
-         if (UserData.Balance < PARSED_AMOUNT)
+         if (UserData.Balance < Withdraw_Amount)
          {
             Indicator(FRED, BRED, "!", "Insufficient Amount."); 
             fclose(file);
@@ -344,9 +319,9 @@ void Withdraw(int ACCOUNT_NUMBER) {
          else {
             Indicator(FGREEN, BGREEN, "Success", "You have successfully withdrawn your money.");
             printf("%sPrevious Balance: %.2lf%s\n", FYELLOW, UserData.Balance, FWHITE);
-            UserData.Balance -= PARSED_AMOUNT;
+            UserData.Balance -= Withdraw_Amount;
             printf("%sNew Balance: %.2lf%s\n", FGREEN, UserData.Balance, FWHITE);
-            UserData.Debit += PARSED_AMOUNT;
+            UserData.Debit += Withdraw_Amount;
          }
       }
       
@@ -373,23 +348,21 @@ void Withdraw(int ACCOUNT_NUMBER) {
 void Deposit(char *ACCOUNT_NUMBER) {   
    
    // Deposits money from a user account
-   
-   char String_Deposit[256];
    double Deposit_Amount;
    
    // Get amount to deposit
    StartDepositInput:;
    system("cls");
-   Indicator(FGREEN, BGREEN, ACCOUNT_NUMBER, "You are about to deposit your money."); 
+   Indicator(FGREEN, BGREEN, ACCOUNT_NUMBER, "You are about to deposit money."); 
    printf("Enter amount to deposit: ");
-   scanf("%s", String_Deposit);
+   scanf("%lf", &Deposit_Amount);
    fflush(stdin);
-
-   Deposit_Amount = Parse_To_Double(String_Deposit);
-
+   
    // verify amount if valid
-   if (Deposit_Amount == 0.0)
+   if (Deposit_Amount < 0.00000001)
    {
+      Indicator(FRED, BRED, "Invalid Amount", "The amount that you have inpputed is invalid.");
+      Pause("Press any key to continue.");
       goto StartDepositInput;
    }
    
@@ -482,6 +455,17 @@ void Delete_Account() {
    Indicator(FRED, BRED, "Account Deletion", "You are about to delete an acount.");
    Get_User_Account_Number("Enter the account number you want to delete: ", Account_Number);
 
+   // Check if account a user account and not an admin
+
+   if (Is_Account_Admin(atoi(Account_Number)))
+   {
+      printf("\n");
+      memset(Account_Number, 0, sizeof(Account_Number));
+      Indicator(FYELLOW, BYELLOW, "Warning", "You cannot delete an admin account!");
+      Pause("Press any key to go back to main menu.");
+      goto End;
+   }
+
    // Verify if that account number exists
    if (!Is_Acc_Number_Registered(Account_Number))
    {
@@ -499,7 +483,6 @@ void Delete_Account() {
    // Shutdown system if user tried to login thrice
    if (attempts == 0)
    {
-      printf("\nYou only have %d attempt(s) left.", attempts);
       Secure_System();
    }
    
@@ -513,15 +496,17 @@ void Delete_Account() {
       attempts--;
       printf("\n");
       Indicator(FRED, BRED, Account_Number, "Incorrect PIN!");
+      printf("You only have %d attempt(s) left.\n", attempts);
       Pause("Press any key to continue.");
       goto PINRegion;
    }
+   
 
    // Show prompt
    PromptRegion:;
    system("cls");
    Display_User_Data(atoi(Account_Number));
-   Indicator(FYELLOW, BYELLOW, Account_Number, "Are you sure to delete this account? Your data cannot be recovered after this.");
+   Indicator(FYELLOW, BYELLOW, Account_Number, "Are you sure to delete this account? The data of this account cannot be recovered after this.");
    Indicator(FRED, BRED, "Y", "Yes, I want to delete.");
    Indicator(FGREEN, BGREEN, "N", "No, I have changed my mind.");
 
@@ -541,12 +526,14 @@ void Delete_Account() {
       Pause("Press any key to continue.");   
       goto PromptRegion;
    }
-
+   
+   End:;
 }
 
 void Delete_User_Account(int ACCOUNT_NUMBER) {
    system("cls");
-   // Delete user's record from account.dat and bank.txt
+   
+   // Delete user's record from bank.txt
 
    FILE *file = fopen(BANK_DATABASE_FILE, "r"); // original database
    FILE *filetemp = fopen(BANK_DATABASE_TEMP_FILE, "w"); // new database
@@ -572,32 +559,6 @@ void Delete_User_Account(int ACCOUNT_NUMBER) {
    remove(BANK_DATABASE_FILE);
    rename(BANK_DATABASE_TEMP_FILE, BANK_DATABASE_FILE);
 
-   // delete account number from account database file
-   FILE *filedat = fopen(ACCOUNT_DATABASE_FILE, "rb"); // old, original database
-   FILE *filedattemp = fopen(ACCOUNT_DATABASE_TEMP_FILE, "wb"); // new database
-
-   int Account_Number_Buffer; // buffer for each account number
-
-   // read each line of the original database
-   while (fread(&Account_Number_Buffer, sizeof(Account_Number_Buffer), 1, file) == 1)
-   {
-      // If the line is not the account number that we want to delete, then store in new database
-      if (Account_Number_Buffer != ACCOUNT_NUMBER)
-      {
-         fwrite(&Account_Number_Buffer, sizeof(Account_Number_Buffer), 1, filedattemp);
-      }
-   }
-   
-   fclose(filedat);
-   fclose(filedattemp);
-
-   // replace the old account.dat by account.temp.dat
-   remove(ACCOUNT_DATABASE_FILE);
-   rename(ACCOUNT_DATABASE_TEMP_FILE, ACCOUNT_DATABASE_FILE);
-   
-   Indicator(FGREEN, BGREEN, "Success", "Account deleted successfully.");
-   Pause("Press any key to continue.");
-
 }
 
 void View_Accounts() {
@@ -615,8 +576,14 @@ void View_Accounts() {
    // read each line until EOF
    while (fscanf(file, BANK_DATABASE_STRING_FORMAT, &UserData.Acc_Number, UserData.Name, &UserData.PIN, &UserData.Credit, &UserData.Debit, &UserData.Balance) != EOF)
    {
-      printf("%-10d %s%-20s%s %-10s %-15.2lf %-15.2lf %-15.2lf\n", UserData.Acc_Number, FBLUE, UserData.Name, FWHITE, "****", UserData.Credit, UserData.Debit, UserData.Balance);   
+      if (Is_Account_Admin(UserData.Acc_Number))
+      {
+         printf("%-10d %s%-20s%s %-10s %-15.2lf %-15.2lf %-15.2lf\n", UserData.Acc_Number, FYELLOW, UserData.Name, FWHITE, "****", UserData.Credit, UserData.Debit, UserData.Balance);   
+      } else {
+         printf("%-10d %s%-20s%s %-10s %-15.2lf %-15.2lf %-15.2lf\n", UserData.Acc_Number, FBLUE, UserData.Name, FWHITE, "****", UserData.Credit, UserData.Debit, UserData.Balance);   
+      }
       printf("=================================================================================================================\n");
+      
    }
    printf("Nothing follows.\n");
    fclose(file);
