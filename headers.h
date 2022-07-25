@@ -76,7 +76,7 @@ void Display_User_Data_Input_Fields(char *, char *, char *, char *, int , char *
 int Is_User_Want_Sign_Out();
 void Edit_Account();
 void Deposit(char *);
-double Get_Double_Input(char *);
+double Parse_To_Double(char *);
 void Display_User_Data(int);
 void Delete_Account();
 void Delete_User_Account(int);

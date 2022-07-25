@@ -1,5 +1,8 @@
 int Is_Acc_Number_Registered(char ACC_NUMBER[]) {
    
+   // Checks if account number is registered
+   // Returns: 0, 1
+
    FILE *file;
    file = fopen(ACCOUNT_DATABASE_FILE, "rb");
    
@@ -19,20 +22,21 @@ int Is_Acc_Number_Registered(char ACC_NUMBER[]) {
 
 int Verify_PIN(char PIN_CODE[], char ACCOUNT_NUMBER[]) {
 
-   struct UserData GUD;
+   // Checks if a PIN of a specific account number is valid
+   // Returns: 0, 1
+
+   struct UserData UserData;
 
    FILE *file;
    file = fopen(BANK_DATABASE_FILE, "r");
-   while (fscanf(file,BANK_DATABASE_STRING_FORMAT, &GUD.Acc_Number, GUD.Name, &GUD.PIN, &GUD.Credit, &GUD.Debit, &GUD.Balance) != EOF) {
+   while (fscanf(file,BANK_DATABASE_STRING_FORMAT, &UserData.Acc_Number, UserData.Name, &UserData.PIN, &UserData.Credit, &UserData.Debit, &UserData.Balance) != EOF) {
 
-      if (GUD.PIN == atoi(PIN_CODE) && GUD.Acc_Number == atoi(ACCOUNT_NUMBER))
+      if (UserData.PIN == atoi(PIN_CODE) && UserData.Acc_Number == atoi(ACCOUNT_NUMBER))
       {
          fclose(file);
          return 1;
       }
-      
    }
-
    fclose(file);
    return 0;
 }
