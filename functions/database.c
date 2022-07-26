@@ -36,4 +36,7 @@ void Database_Check() {
       Indicator(FGREEN, BGREEN, "Complete", "Account database initialization complete.");
       Pause("Press any key to continue.");
    }
+
+   fclose(File_Bank_Read);
+   fclose(File_Account_Read);
 }

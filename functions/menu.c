@@ -81,6 +81,8 @@ void Add_New_Account() {
    if (atoi(New_PIN) != atoi(Confirm_New_PIN))
    {
       printf("\n");
+      memset(New_PIN, 0, sizeof(New_PIN));
+      memset(Confirm_New_PIN, 0, sizeof(Confirm_New_PIN));
       Indicator(FRED, BRED, "PIN Mismatch", "The PIN confirmation does not match.");
       Pause("Press any key to continue.");
       system("cls");
