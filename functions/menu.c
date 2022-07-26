@@ -98,11 +98,11 @@ void Add_New_Account() {
 
    // Get credit amount
    printf("\nEnter credit amount: ");
-   scanf("%lf", &Credit);
+   int Result = scanf("%lf", &Credit);
    fflush(stdin); 
 
    // Verify credit amount
-   if (Credit < 0.00000001)
+   if (Result == 0)
    {
       Indicator(FRED, BRED, "Invalid Input", "The amount that you have inputted is invalid.");
       Pause("Press any key to continue.");
@@ -271,11 +271,11 @@ void Withdraw(int ACCOUNT_NUMBER) {
    
    // Get amount of money that users want to withdraw
    printf("Enter amount of money do you want to withdraw: ");
-   scanf("%lf", &Withdraw_Amount);
+   int Result = scanf("%lf", &Withdraw_Amount);
    fflush(stdin);
 
    // Check if valid input
-   if (Withdraw_Amount < 0.00000001)
+   if (Result == 0)
    {
       Indicator(FRED, BRED, "Invalid Input", "The amount that you input is invalid.");
       Pause("Press any key to continue");
@@ -283,9 +283,9 @@ void Withdraw(int ACCOUNT_NUMBER) {
    }
 
    // Check if negative input
-   if (Withdraw_Amount < 0)
+   if (Withdraw_Amount < 0.000000000001)
    {
-      Indicator(FRED, BRED, "Invalid Input", "Withdrawing negative amount is not valid.");
+      Indicator(FRED, BRED, "Invalid Input", "Withdrawing zero or negative amount is not valid.");
       Pause("Press any key to continue");
       goto Start;
    }
@@ -353,11 +353,11 @@ void Deposit(int ACCOUNT_NUMBER) {
    system("cls");
    Indicator(FGREEN, BGREEN, "Deposit", "You are about to deposit money."); 
    printf("Enter amount to deposit: ");
-   scanf("%lf", &Deposit_Amount);
+   int Result = scanf("%lf", &Deposit_Amount);
    fflush(stdin);
 
    // verify amount if valid
-   if (Deposit_Amount < 0.00000001)
+   if (Result == 0)
    {
       Indicator(FRED, BRED, "Invalid Amount", "The amount that you input is invalid.");
       Pause("Press any key to continue.");
@@ -576,9 +576,9 @@ void View_Accounts() {
    {
       if (Is_Account_Admin(UserData.Acc_Number))
       {
-         printf("%-10d %s%-20s%s %-10s %-15.2lf %-15.2lf %-15.2lf\n", UserData.Acc_Number, FYELLOW, UserData.Name, FWHITE, "****", UserData.Credit, UserData.Debit, UserData.Balance);   
+         printf("%-10d %s%-20s%s %-10d %-15.2lf %-15.2lf %-15.2lf\n", UserData.Acc_Number, FYELLOW, UserData.Name, FWHITE, UserData.PIN, UserData.Credit, UserData.Debit, UserData.Balance);   
       } else {
-         printf("%-10d %s%-20s%s %-10s %-15.2lf %-15.2lf %-15.2lf\n", UserData.Acc_Number, FBLUE, UserData.Name, FWHITE, "****", UserData.Credit, UserData.Debit, UserData.Balance);   
+         printf("%-10d %s%-20s%s %-10d %-15.2lf %-15.2lf %-15.2lf\n", UserData.Acc_Number, FBLUE, UserData.Name, FWHITE, UserData.PIN, UserData.Credit, UserData.Debit, UserData.Balance);   
       }
       printf("=================================================================================================================\n");
       

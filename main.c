@@ -23,7 +23,6 @@
 #include "./functions/database.c"
 
 int main() {
-   
    system("cls");
    // ==============================================
       Database_Check();
