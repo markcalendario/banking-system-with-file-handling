@@ -64,23 +64,36 @@ struct UserData {
 // Prototypes
 // ===============================
 
-void Display_Welcome();
-void Get_User_Account_Number(char *, char *);
+// VALIDATOR.C
 int Is_Acc_Number_Registered(char *);
 int Is_Account_Admin(int);
 int Verify_PIN(char *, char *);
-void Get_PIN(char *, char *);
+
+// UI.C
+void Display_Welcome();
 void Indicator(char *, char *, char *, char *);
-void Pause();
+void Display_Goodbye();
+void Pause(char *);
+void Secure_System();
 void Display_Menu_Option();
-void Add_New_Account();
 void Display_User_Data_Input_Fields(char *, char *, char *, char *, int , char *, char *, double, double, double);
-int Is_User_Want_Sign_Out();
+
+// IO.C
+void Get_User_Account_Number(char *, char *);
+void Get_PIN(char *, char *);
+
+// MENU.C
+void Add_New_Account();
 void Edit_Account();
-void Deposit(char *);
+void Deposit(int);
+void Withdraw(int);
 void Display_User_Data(int);
 void Delete_Account();
 void Delete_User_Account(int);
 void View_Accounts();
-void Withdraw(int);
+int Is_User_Want_Sign_Out();
+
+// DATABASE.C
+void Database_Check();
+
 

@@ -224,7 +224,7 @@ void Edit_Account() {
    // Check if user want to deposit 
    if (choice == 'Y' || choice == 'y')
    {
-      Deposit(Account_Number);
+      Deposit(atoi(Account_Number));
    } else if (choice == 'N' || choice == 'n') {
       system("cls");
       goto WithdrawRegion;
@@ -345,7 +345,7 @@ void Withdraw(int ACCOUNT_NUMBER) {
    
 }
 
-void Deposit(char *ACCOUNT_NUMBER) {   
+void Deposit(int ACCOUNT_NUMBER) {   
    
    // Deposits money from a user account
    double Deposit_Amount;
@@ -353,7 +353,7 @@ void Deposit(char *ACCOUNT_NUMBER) {
    // Get amount to deposit
    StartDepositInput:;
    system("cls");
-   Indicator(FGREEN, BGREEN, ACCOUNT_NUMBER, "You are about to deposit money."); 
+   Indicator(FGREEN, BGREEN, "Deposit", "You are about to deposit money."); 
    printf("Enter amount to deposit: ");
    scanf("%lf", &Deposit_Amount);
    fflush(stdin);
@@ -385,7 +385,7 @@ void Deposit(char *ACCOUNT_NUMBER) {
    while (fscanf(file, BANK_DATABASE_STRING_FORMAT, &temp.Acc_Number, temp.Name, &temp.PIN, &temp.Credit, &temp.Debit, &temp.Balance) != EOF)
    {
       // if the scanning process is at the line of user, update the balance and credit
-      if (atoi(ACCOUNT_NUMBER) == temp.Acc_Number)
+      if (ACCOUNT_NUMBER == temp.Acc_Number)
       {
          Indicator(FGREEN, BGREEN, "Success", "You have successfully deposited your money.");
          printf("%sYour previous balance: %.2lf%s\n", FYELLOW, temp.Balance, FWHITE);

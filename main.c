@@ -20,31 +20,14 @@
 #include "./functions/io.c"
 #include "./functions/ui.c"
 #include "./functions/menu.c"
-
-#pragma region DATABASE INITIALIZER
-   // FILE *file = fopen(BANK_DATABASE_FILE, "w");
-   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10001, "Kenneth", 1902, 0.00, 0.00, 0.00);
-   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10002, "Kim", 3245, 0.00, 0.00, 0.00);
-   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10003, "Nicole", 4444, 0.00, 0.00, 0.00);
-   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10004, "Elaine", 9944, 0.00, 0.00, 0.00);
-   // fprintf(file, BANK_DATABASE_STRING_FORMAT, 10005, "JohnRace", 6677, 0.00, 0.00, 0.00);
-   // fclose(file);
-
-   // FILE *file2 = fopen(ACCOUNT_DATABASE_FILE, "wb");
-   // int a = 10001;
-   // int b = 10002;
-   // int c = 10003;
-   // int d = 10004;
-   // int e = 10005;
-   // fwrite(&a, sizeof(a), 1, file2);
-   // fwrite(&b, sizeof(b), 1, file2);
-   // fwrite(&c, sizeof(c), 1, file2);
-   // fwrite(&d, sizeof(d), 1, file2);
-   // fwrite(&e, sizeof(e), 1, file2);
-   // fclose(file2);
-#pragma endregion
+#include "./functions/database.c"
 
 int main() {
+   
+   system("cls");
+   // ==============================================
+      Database_Check();
+   // ==============================================
 
    char Acc_Number[MAX_ACCOUNT_NUMBER_LENGTH + 1] = "\0";
    char PIN[MAX_PIN_LENGTH + 1] = "\0";
