@@ -6,7 +6,6 @@ void Indicator(char foreground[], char background[], char indicate[], char strin
 void Display_User_Data_Input_Fields(char *FCOLOR, char *BCOLOR, char *TITLE, char *TEXT, int ACCOUNT_NUMBER, char *NAME, char *PIN, double CREDIT, double DEBIT, double BALANCE) {
    
    // Displays a user data with a UI design
-   
    Indicator(FCOLOR, BCOLOR, TITLE, TEXT);
    printf("%sAccount Number:%s %d\n", FCOLOR, FWHITE, ACCOUNT_NUMBER);
    printf("%sAccount Name:%s %s\n", FCOLOR, FWHITE, NAME);
@@ -19,7 +18,7 @@ void Display_User_Data_Input_Fields(char *FCOLOR, char *BCOLOR, char *TITLE, cha
 void Display_Welcome() {
    char Greet_Str[50] = "Welcome to ";
    strcat(Greet_Str, BANK_NAME);
-   Indicator(FBLUE, BBLUE, "", Greet_Str);
+   Indicator(FBLUE, BBLUE, "Welcome", Greet_Str);
    Pause("Press any key to start.");
    system("cls");
 }

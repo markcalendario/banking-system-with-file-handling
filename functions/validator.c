@@ -1,6 +1,6 @@
 int Is_Account_Admin(int ACC_NUMBER) {
    
-   // Checks if account number is registered
+   // Checks if account number is admin
    // Returns: 0, 1
 
    FILE *file;

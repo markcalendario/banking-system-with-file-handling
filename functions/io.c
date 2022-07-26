@@ -47,7 +47,7 @@ void Get_User_Account_Number(char string[], char SELECTED_ACC_NUMBER[]) {
    // It also prevents users from typing more than five (5) numbers.
 
    int x = 0;
-
+   
    Start:;
    printf("%s", string); // Print a text: "Enter PIN" (may vary according to the passed guide string) 
    printf("%s", SELECTED_ACC_NUMBER); // Print the account number beside the guide string

@@ -20,14 +20,12 @@ void Add_New_Account() {
    // Get New Account Number
    // ========================================
    NewAccNumberRegion:;
-
    system("cls");
 
    // Display all the required input field
    Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Credit, 0.0, Credit);
-
    printf("\n");
-   Get_User_Account_Number("Enter new account number: ", New_Acc_Number);
+   Get_User_Account_Number("Enter new 5-digit account number: ", New_Acc_Number);
    
    // Check if the new account number is registered
    if (Is_Acc_Number_Registered(New_Acc_Number)) {
@@ -66,7 +64,7 @@ void Add_New_Account() {
 
    Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name, New_PIN, Credit, 0.0, Credit);
    printf("\n");
-   Get_PIN("Enter new PIN: ", New_PIN);
+   Get_PIN("Enter new 4-digit PIN: ", New_PIN);
    
    system("cls");
    Display_User_Data_Input_Fields(FBLUE, BBLUE, "Add New Account", "Please fill out all required fields.", atoi(New_Acc_Number), New_Name,  "", Credit, 0.0, Credit);
@@ -84,7 +82,7 @@ void Add_New_Account() {
       memset(New_PIN, 0, sizeof(New_PIN));
       memset(Confirm_New_PIN, 0, sizeof(Confirm_New_PIN));
       Indicator(FRED, BRED, "PIN Mismatch", "The PIN confirmation does not match.");
-      Pause("Press any key to continue.");
+      Pause("Press any key to enter new PIN.");
       system("cls");
       goto ConfirmPIN;
    }
@@ -101,7 +99,7 @@ void Add_New_Account() {
    // Get credit amount
    printf("\nEnter credit amount: ");
    scanf("%lf", &Credit);
-   fflush(stdin);
+   fflush(stdin); 
 
    // Verify credit amount
    if (Credit < 0.00000001)
@@ -156,7 +154,6 @@ int Is_User_Want_Sign_Out() {
 void Edit_Account() {
    char Account_Number[MAX_ACCOUNT_NUMBER_LENGTH + 1] = "\0";
    char PIN[MAX_PIN_LENGTH + 1] = "\0";
-
    char choice;
 
    // ========================================
@@ -174,7 +171,7 @@ void Edit_Account() {
    if (Is_Account_Admin(atoi(Account_Number)))
    {
       system("cls");
-      Indicator(FYELLOW, BYELLOW, "Warning", "You cannot withdraw using an admin account.");
+      Indicator(FYELLOW, BYELLOW, "Warning", "You cannot edit an admin account.");
       Pause("Press any key to go back to main menu.");
       goto End;
    }
@@ -268,8 +265,7 @@ void Withdraw(int ACCOUNT_NUMBER) {
    // Withdraws money from database
 
    Start:;
-   char AMOUNT[256] = "\0";
-   double Withdraw_Amount = 0;
+   double Withdraw_Amount;
    system("cls");
    Indicator(FGREEN, BGREEN, "Withdraw", "You are about to withdraw your money."); 
    
@@ -281,7 +277,7 @@ void Withdraw(int ACCOUNT_NUMBER) {
    // Check if valid input
    if (Withdraw_Amount < 0.00000001)
    {
-      Indicator(FRED, BRED, "Invalid Input", "The amount of money you have inputted is invalid.");
+      Indicator(FRED, BRED, "Invalid Input", "The amount that you input is invalid.");
       Pause("Press any key to continue");
       goto Start;
    }
@@ -359,11 +355,11 @@ void Deposit(int ACCOUNT_NUMBER) {
    printf("Enter amount to deposit: ");
    scanf("%lf", &Deposit_Amount);
    fflush(stdin);
-   
+
    // verify amount if valid
    if (Deposit_Amount < 0.00000001)
    {
-      Indicator(FRED, BRED, "Invalid Amount", "The amount that you have inpputed is invalid.");
+      Indicator(FRED, BRED, "Invalid Amount", "The amount that you input is invalid.");
       Pause("Press any key to continue.");
       goto StartDepositInput;
    }
