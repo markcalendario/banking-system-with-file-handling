@@ -24,15 +24,17 @@
 
 int main() {
    system("cls");
-   // ==============================================
-      Database_Check();
-   // ==============================================
 
    char Acc_Number[MAX_ACCOUNT_NUMBER_LENGTH + 1] = "\0";
    char PIN[MAX_PIN_LENGTH + 1] = "\0";
    int TRIES = 0;
 
    StartRegion:;
+
+   // ==============================================
+      Database_Check();
+   // ==============================================
+
    system("cls");
    Display_Welcome();
 
