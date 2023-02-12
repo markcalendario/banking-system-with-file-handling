@@ -89,13 +89,9 @@ Database Admin
 Quality Tester
 
 
+## All Rights Reserved
 
+© Developers and Contributors
 
-
-
-
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
+No part of this code may be reproduced, distributed, or transmitted in any form or by any means without the prior written permission of the copyright owner indicated in this file. 
 
