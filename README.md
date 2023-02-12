@@ -93,5 +93,5 @@ Quality Tester
 
 © Developers and Contributors
 
-No part of this code may be reproduced, distributed, or transmitted in any form or by any means without the prior written permission of the copyright owner indicated in this file. 
+No part of this code may be reproduced, distributed, or transmitted in any form or by any means without the prior written permission of the copyright owners indicated in this file. 
 
